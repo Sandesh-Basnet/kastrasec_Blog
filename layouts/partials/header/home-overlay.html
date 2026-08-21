@@ -1,0 +1,21 @@
+{{/* Homepage-only transparent overlay header: floats fixed over the hero
+    image (which starts at y=0), with Blowfish's standard scroll-blur backdrop.
+    All other pages fall through to the theme's plain basic header. */}}
+{{- if .IsHome -}}
+  <div class="fixed top-0 inset-x-0 z-100">
+    <div
+      id="menu-blur"
+      class="absolute opacity-0 inset-x-0 top-0 h-full single_hero_background nozoom backdrop-blur-2xl shadow-2xl bg-neutral/25 dark:bg-neutral-800/25"></div>
+    <div class="relative m-auto leading-7 max-w-7xl px-6 sm:px-14 md:px-24 lg:px-32">
+      {{ partial "header/basic.html" . }}
+    </div>
+  </div>
+  {{ $backgroundBlur := resources.Get "js/background-blur.js" }}
+  {{ $backgroundBlur = $backgroundBlur | resources.Minify | resources.Fingerprint (.Site.Params.fingerprintAlgorithm | default "sha512") }}
+  <script
+    src="{{ $backgroundBlur.RelPermalink }}"
+    integrity="{{ $backgroundBlur.Data.Integrity }}"
+    data-blur-id="menu-blur"></script>
+{{- else -}}
+  {{ partial "header/basic.html" . }}
+{{- end -}}

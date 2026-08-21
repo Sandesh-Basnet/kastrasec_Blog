@@ -1,0 +1,8 @@
+# Build artifacts
+public/
+.hugo_build.lock
+resources/_gen/
+
+# Dependencies
+node_modules/
+.obsidian/

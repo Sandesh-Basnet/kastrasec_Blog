@@ -1,0 +1,68 @@
+{{ define "main" }}
+
+{{/* Full-bleed hero background: fixed to the viewport (immune to the body's
+   max-width/padding constraints, same technique as the theme's article
+   heroes). Sits behind content via -z-10; the body background propagates to
+   the root canvas so this layer shows through. */}}
+<div
+  id="hero-background"
+  class="fixed inset-x-0 top-0 h-[85vh] -z-10 bg-cover bg-center nozoom"
+  style="background-image: url('/img/hero-bg.png');"
+  aria-hidden="true">
+  <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-neutral-900/70 to-transparent"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-neutral-900/40 via-neutral-900/55 to-neutral-900"></div>
+</div>
+
+<section class="relative flex min-h-[85vh] items-center justify-center text-center">
+  <div class="max-w-3xl mx-auto px-6">
+    <p class="landing-rise uppercase tracking-[0.3em] text-primary-400 font-semibold mb-4">
+      {{ .Site.Title }}
+    </p>
+    <h1 class="landing-rise landing-rise-1 text-5xl md:text-6xl font-extrabold text-neutral-50 leading-tight mb-6">
+      Notes from the world of security &amp; tech.
+    </h1>
+    <p class="landing-rise landing-rise-2 text-lg text-neutral-300 mb-8">
+      Write-ups, research, and things I'm learning along the way.
+    </p>
+    <a
+      href="/posts/"
+      class="landing-rise landing-rise-3 inline-block px-6 py-3 rounded-lg bg-primary-500 hover:bg-primary-600 text-white font-semibold shadow-lg shadow-primary-900/40 transition-colors">
+      Read the blog
+    </a>
+  </div>
+</section>
+
+{{/* Opaque band matching the hero's fade-out color so the fixed image
+   disappears cleanly as this section scrolls over it. */}}
+<section class="relative bg-neutral-900">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <h2 class="text-3xl font-bold text-neutral-50 mb-8">Recent posts</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    {{ range first 6 (where .Site.RegularPages "Type" "posts") }}
+    {{ $cardImage := partial "functions/card-image.html" . }}
+    <a
+      href="{{ .RelPermalink }}"
+      class="group block rounded-xl overflow-hidden bg-neutral-800 hover:bg-neutral-700 border border-neutral-700/60 hover:border-primary-600/60 transition-colors shadow-lg">
+      {{ if $cardImage }}
+      <img
+        src="{{ $cardImage }}"
+        class="w-full h-40 object-cover"
+        loading="lazy"
+        alt="" />
+      {{ else }}
+      <div class="w-full h-40 bg-gradient-to-br from-secondary-800 via-neutral-800 to-neutral-900"></div>
+      {{ end }}
+      <div class="p-5">
+        <h3 class="text-xl font-semibold text-neutral-50 mb-2 group-hover:text-primary-400 transition-colors">
+          {{ .Title }}
+        </h3>
+        <p class="text-sm text-neutral-400">{{ .Date.Format "2 January 2006" }}</p>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+  </div>
+</section>
+
+{{ end }}

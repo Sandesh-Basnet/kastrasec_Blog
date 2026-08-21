@@ -1,0 +1,19 @@
+/* The homepage hero breaks out of the constrained body (max-w-7xl + padding)
+   to true viewport width using w-screen; clip any resulting horizontal
+   overflow (100vw includes the scrollbar width) instead of creating a
+   horizontal scrollbar. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Homepage below-hero background must be uniform edge-to-edge. The body is a
+   centered max-w-7xl box (baseof), so any section background stops at 1280px
+   and wider viewports show the root canvas beside it. Body background
+   propagates to that canvas, so overriding it here (when the homepage hero is
+   present) paints ONE color across the full viewport, down through the
+   footer. Must match --color-neutral-900 from assets/css/schemes/kastra.css,
+   which the hero gradient and posts band fade into. */
+body:has(#hero-background) {
+  background-color: rgb(13, 18, 34);
+}

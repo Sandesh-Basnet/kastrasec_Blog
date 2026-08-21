@@ -1,0 +1,41 @@
+/* Kastra scheme — palette sampled from static/img/hero-bg.png:
+   deep navy base (#000020–#101830), royal blue accents (#24306c/#3c549c),
+   warm orange highlights as the complementary accent.
+   Neutrals are blue-tinted so the page background blends with the hero image;
+   neutral-900 (#0d1222) matches the image's dark base for seamless fades. */
+:root {
+  --color-neutral: 255, 255, 255;
+  /* Navy-tinted slate */
+  --color-neutral-50: 248, 250, 253;
+  --color-neutral-100: 240, 244, 250;
+  --color-neutral-200: 219, 228, 240;
+  --color-neutral-300: 184, 197, 216;
+  --color-neutral-400: 140, 156, 181;
+  --color-neutral-500: 96, 113, 141;
+  --color-neutral-600: 66, 81, 107;
+  --color-neutral-700: 45, 57, 80;
+  --color-neutral-800: 27, 35, 58;
+  --color-neutral-900: 13, 18, 34;
+  /* Warm orange */
+  --color-primary-50: 255, 247, 237;
+  --color-primary-100: 255, 237, 213;
+  --color-primary-200: 254, 215, 170;
+  --color-primary-300: 253, 186, 116;
+  --color-primary-400: 251, 146, 60;
+  --color-primary-500: 249, 115, 22;
+  --color-primary-600: 234, 88, 12;
+  --color-primary-700: 194, 65, 12;
+  --color-primary-800: 154, 52, 18;
+  --color-primary-900: 124, 45, 18;
+  /* Violet */
+  --color-secondary-50: 245, 243, 255;
+  --color-secondary-100: 237, 233, 254;
+  --color-secondary-200: 221, 214, 254;
+  --color-secondary-300: 196, 181, 253;
+  --color-secondary-400: 167, 139, 250;
+  --color-secondary-500: 139, 92, 246;
+  --color-secondary-600: 124, 58, 237;
+  --color-secondary-700: 109, 40, 217;
+  --color-secondary-800: 91, 33, 182;
+  --color-secondary-900: 76, 29, 149;
+}

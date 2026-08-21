@@ -1,0 +1,33 @@
+/*! Site CSS build | recompiles Blowfish's Tailwind source including classes
+    used in project-level layouts/. Output shadows the theme's committed
+    assets/css/compiled/main.css (Hugo project asset mounts take precedence),
+    so head.html picks this up without any template changes. */
+
+/* Pulls in @import "tailwindcss", the theme's tailwind.config.js (@config)
+   and all of Blowfish's component layers. */
+@import "../../../themes/blowfish/assets/css/main.css";
+
+/* Deterministic scan paths: project templates/content + theme templates.
+   Prevents drift from Tailwind's automatic source detection. */
+@source "../../../layouts/**/*.html";
+@source "../../../content/**/*.md";
+@source "../../../themes/blowfish/layouts/**/*.html";
+
+/* Site typography: Manrope everywhere by default, Chakra Petch on headings.
+   Font files load via layouts/partials/extend-head.html (Google Fonts). */
+@theme {
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --default-font-family: var(--font-sans);
+  --font-display: "Chakra Petch", var(--font-sans);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+  }
+}

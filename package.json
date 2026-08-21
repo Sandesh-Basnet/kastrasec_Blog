@@ -1,0 +1,15 @@
+{
+  "name": "myblog",
+  "private": true,
+  "description": "Tailwind CSS build for the Blowfish theme (recompiles assets/css/compiled/main.css including classes used in project layouts/).",
+  "scripts": {
+    "css": "tailwindcss -i ./assets/css/src/main.css -o ./assets/css/compiled/main.css --minify",
+    "css:watch": "tailwindcss -i ./assets/css/src/main.css -o ./assets/css/compiled/main.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "tailwindcss": "^4.3.3"
+  }
+}

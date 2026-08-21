@@ -1,0 +1,37 @@
+{{/* Resolve a post's featured image URL using the SAME chain as the article
+     hero (functions/feature-image.html + hero/basic.html): featureimage front
+     matter (page-bundle resource name, global asset, or absolute URL), then
+     bundle resources matching background, feature, cover or thumbnail names.
+     Returns empty string when the post has none, so callers can fall back to
+     a placeholder. Deliberately omits the hero site-default-background
+     fallback because cards must show the placeholder instead. */}}
+{{ $page := . }}
+{{ $url := "" }}
+{{ $featured := "" }}
+{{ with partial "functions/feature-image.html" $page }}
+  {{ if or (strings.HasPrefix . "http:") (strings.HasPrefix . "https:") }}
+    {{ if site.Params.hotlinkFeatureImage }}
+      {{ $url = . }}
+    {{ else }}
+      {{ with try (resources.GetRemote .) }}
+        {{ with .Value }}{{ $featured = . }}{{ end }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ $featured = $page.Resources.Get . }}
+    {{ if not $featured }}{{ $featured = resources.Get . }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ if not (or $url $featured) }}
+  {{ $images := $page.Resources.ByType "image" }}
+  {{ range slice "*background*" "*feature*" "*cover*" "*thumbnail*" }}
+    {{ if not $featured }}{{ $featured = $images.GetMatch . }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ with $featured }}
+  {{ $url = .RelPermalink }}
+  {{ if not (or (site.Store.Get "disableImageOptimization") (eq .MediaType.SubType "svg")) }}
+    {{ $url = (partial "functions/resize.html" (dict "resource" . "spec" (site.Store.Get "backgroundImageWidth"))).RelPermalink }}
+  {{ end }}
+{{ end }}
+{{ return $url }}
