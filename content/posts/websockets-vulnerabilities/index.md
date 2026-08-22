@@ -1,7 +1,7 @@
 +++
 title = 'WebSockets Vulnerabilities'
 date = '2026-08-22T07:44:25+05:45'
-draft = true
+draft = false
 tags = []
 featureimage = 'web.png'
 +++
